@@ -36,7 +36,7 @@ func ReadFirstInput(path string) ([]int, []int) {
 	return locations_1, locations_2
 }
 
-func AddedDistances(locations_1 []int, locations_2 []int) int {
+func AddedDistances(locations_1, locations_2 []int) int {
 	totalDistance := 0
 	slices.Sort(locations_1)
 	slices.Sort(locations_2)
@@ -53,8 +53,27 @@ func AddedDistances(locations_1 []int, locations_2 []int) int {
 	return totalDistance
 }
 
+func SimilarityScore(locations_1, locations_2 []int) int {
+	similarityScore := 0
+	similarityMap := make(map[int]int)
+
+	for _, location := range locations_2 {
+		similarityMap[location]++
+	}
+
+	for _, location := range locations_1 {
+		if count := similarityMap[location]; count > 0 {
+			similarityScore += location * count
+		}
+	}
+
+	return similarityScore
+}
+
 func main() {
-	locations_1, locations_2 := ReadFirstInput("input/input_1.txt")
+	locations_1, locations_2 := ReadFirstInput("input/day_1.txt")
 	totalDistance := AddedDistances(locations_1, locations_2)
+	similarityScore := SimilarityScore(locations_1, locations_2)
 	fmt.Println("total distance: ", totalDistance)
+	fmt.Println("similarity score: ", similarityScore)
 }
